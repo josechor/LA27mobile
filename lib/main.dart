@@ -20,7 +20,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'LA27',
       theme: AppTheme().getTheme(),
-      home: const AuthWrapper(),
+      home: SafeArea(
+        bottom: false,
+        top: false,
+        child: const AuthWrapper(),
+      ),
     );
   }
 }
