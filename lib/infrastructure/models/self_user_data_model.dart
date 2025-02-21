@@ -48,7 +48,7 @@ class SelfUserDataModel {
         likesCount: json['likesCount'],
       );
 
-  SelfUserData toVideoPostEntity() => SelfUserData(
+  SelfUserData toSelfUserDataEntity() => SelfUserData(
         userId: userId,
         userName: userName,
         demonName: demonName,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:la27mobile/config/theme/app_theme.dart';
 import 'package:la27mobile/presentation/providers/auth_provider.dart';
-import 'package:la27mobile/presentation/screens/home_screen.dart';
 import 'package:la27mobile/presentation/screens/login_screen.dart';
+import 'package:la27mobile/presentation/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -40,6 +40,6 @@ class AuthWrapper extends StatelessWidget {
       return const LoginScreen();
     }
 
-    return const HomeScreen();
+    return const MainScreen();
   }
 }

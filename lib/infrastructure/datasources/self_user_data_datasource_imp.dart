@@ -22,7 +22,7 @@ class SelfUserDataDatasourceImp implements SelfUserDataDatasource {
 
     if (response.statusCode == 200) {
       return SelfUserDataModel.fromJson(json.decode(response.body))
-          .toVideoPostEntity();
+          .toSelfUserDataEntity();
     } else {
       throw Exception('Failed to load self user data');
     }
