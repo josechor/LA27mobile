@@ -67,6 +67,7 @@ class TuipWidget extends StatelessWidget {
   Container _tuipContent() {
     return Container(
       padding: const EdgeInsets.fromLTRB(45, 0, 10, 0),
+      width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

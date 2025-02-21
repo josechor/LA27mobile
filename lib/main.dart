@@ -40,7 +40,7 @@ class AuthWrapper extends StatelessWidget {
     //   return const Scaffold(body: Center(child: CircularProgressIndicator()));
     // }
 
-    if (authProvider.token == null) {
+    if (authProvider.token == null || authProvider.isLoading) {
       return const LoginScreen();
     }
 
