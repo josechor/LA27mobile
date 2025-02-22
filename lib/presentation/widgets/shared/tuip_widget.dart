@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la27mobile/config/constants.dart';
 import 'package:la27mobile/domain/entities/tuip.dart';
+import 'package:la27mobile/presentation/widgets/shared/full_screen_image_page.dart';
 
 class TuipWidget extends StatelessWidget {
   final Tuip tuip;
@@ -16,7 +17,7 @@ class TuipWidget extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        _tuipContent(),
+        _tuipContent(context),
         SizedBox(
           height: 10,
         ),
@@ -64,29 +65,40 @@ class TuipWidget extends StatelessWidget {
     );
   }
 
-  Container _tuipContent() {
+  Container _tuipContent(context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(45, 0, 10, 0),
       width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            tuip.tuipContent,
-            textAlign: TextAlign.start,
-            style: TextStyle(fontWeight: FontWeight.w500),
-          ),
-          tuip.tuipMultimedia.isNotEmpty &&
-                  tuip.tuipMultimedia[0].endsWith('.webp')
-              ? Image.network(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          tuip.tuipContent,
+          textAlign: TextAlign.start,
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        tuip.tuipMultimedia.isNotEmpty &&
+                tuip.tuipMultimedia[0].endsWith('.webp')
+            ? GestureDetector(
+                onTap: () {
+                  // Cuando se toca la imagen, navega a la pantalla completa
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FullScreenImagePage(
+                        imageUrl:
+                            '$domain/multimedia/${tuip.tuipMultimedia[0]}',
+                      ),
+                    ),
+                  );
+                },
+                child: Image.network(
                   '$domain/multimedia/${tuip.tuipMultimedia[0]}',
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
-                )
-              : Container(),
-        ],
-      ),
+                ),
+              )
+            : Container(),
+      ]),
     );
   }
 
