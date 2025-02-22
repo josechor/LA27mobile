@@ -1,59 +1,162 @@
 import 'package:flutter/material.dart';
 import 'package:la27mobile/config/constants.dart';
 import 'package:la27mobile/domain/entities/tuip.dart';
+import 'package:la27mobile/infrastructure/datasources/tuips_datasource_imp.dart';
+import 'package:la27mobile/infrastructure/repositories/tuips_repository_imp.dart';
 import 'package:la27mobile/presentation/widgets/shared/full_screen_image_page.dart';
 
-class TuipWidget extends StatelessWidget {
+class TuipWidget extends StatefulWidget {
+  final TuipsRepositoryImp tuipsRepository =
+      TuipsRepositoryImp(datasource: TuipsDatasourceImp());
   final Tuip tuip;
-  const TuipWidget({super.key, required this.tuip});
+  TuipWidget({super.key, required this.tuip});
 
+  @override
+  State<TuipWidget> createState() => _TuipWidgetState();
+}
+
+class _TuipWidgetState extends State<TuipWidget> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
-        _tuipHeader(),
+        widget.tuip.parentData != null
+            ? _Tuip(
+                tuip: widget.tuip.parentData!,
+                textTheme: textTheme,
+                isParent: true,
+              )
+            : Container(),
         SizedBox(
           height: 10,
         ),
-        _tuipContent(context),
+        _Tuip(tuip: widget.tuip, textTheme: textTheme),
         SizedBox(
           height: 10,
         ),
-        _tuipFooter(textTheme),
+        widget.tuip.quotingData != null
+            ? _TuipQuoted(
+                tuipQuoted: widget.tuip.quotingData!,
+                widget: widget,
+                textTheme: textTheme)
+            : Container(),
       ],
     );
   }
+}
 
-  Row _tuipFooter(TextTheme textTheme) {
+class _TuipQuoted extends StatelessWidget {
+  const _TuipQuoted(
+      {required this.widget,
+      required this.textTheme,
+      required this.tuipQuoted});
+
+  final Tuip tuipQuoted;
+  final TuipWidget widget;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Container(
+        margin: const EdgeInsets.only(left: 45),
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: colors.primary, width: 0.1),
+        ),
+        child: _Tuip(
+          tuip: tuipQuoted,
+          textTheme: textTheme,
+          isQuoted: true,
+        ));
+  }
+}
+
+class _Tuip extends StatelessWidget {
+  const _Tuip({
+    required this.tuip,
+    required this.textTheme,
+    this.isQuoted = false,
+    this.isParent = false,
+  });
+
+  final Tuip tuip;
+  final TextTheme textTheme;
+  final bool isQuoted;
+  final bool isParent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _TuipHeader(tuip: tuip),
+        SizedBox(
+          height: 10,
+        ),
+        _TuipContent(tuip: tuip, context: context),
+        SizedBox(
+          height: 10,
+        ),
+        isQuoted == false
+            ? _TuipFooter(tuip: tuip, textTheme: textTheme)
+            : Container(),
+      ],
+    );
+  }
+}
+
+class _TuipFooter extends StatelessWidget {
+  const _TuipFooter({
+    required this.tuip,
+    required this.textTheme,
+  });
+
+  final Tuip tuip;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buttonAndLabel(
-            Icon(Icons.chat_bubble_outline,
+        _ButtonAndLabel(
+            icon: Icon(Icons.chat_bubble_outline,
                 size: textTheme.bodySmall?.fontSize ?? 12),
-            tuip.responsesCount.toString()),
-        _buttonAndLabel(
-            Icon(
+            label: tuip.responsesCount.toString()),
+        _ButtonAndLabel(
+            icon: Icon(
               tuip.youLiked == 1
                   ? Icons.favorite
                   : Icons.favorite_border_outlined,
               color: tuip.youLiked == 1 ? Colors.red : null,
               size: textTheme.bodySmall?.fontSize ?? 12,
             ),
-            tuip.likesCount.toString()),
-        _buttonAndLabel(
-            Icon(
+            label: tuip.likesCount.toString()),
+        _ButtonAndLabel(
+            icon: Icon(
               Icons.share,
               size: textTheme.bodySmall?.fontSize ?? 12,
             ),
-            '')
+            label: '')
       ],
     );
   }
+}
 
-  Row _buttonAndLabel(Icon icon, String? label) {
+class _ButtonAndLabel extends StatelessWidget {
+  const _ButtonAndLabel({
+    required this.icon,
+    required this.label,
+  });
+
+  final Icon icon;
+  final String? label;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         icon,
@@ -64,8 +167,19 @@ class TuipWidget extends StatelessWidget {
       ],
     );
   }
+}
 
-  Container _tuipContent(context) {
+class _TuipContent extends StatelessWidget {
+  const _TuipContent({
+    required this.tuip,
+    required this.context,
+  });
+
+  final Tuip tuip;
+  final dynamic context;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(45, 0, 10, 0),
       width: double.infinity,
@@ -101,8 +215,17 @@ class TuipWidget extends StatelessWidget {
       ]),
     );
   }
+}
 
-  Row _tuipHeader() {
+class _TuipHeader extends StatelessWidget {
+  const _TuipHeader({
+    required this.tuip,
+  });
+
+  final Tuip tuip;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       spacing: 10,
       children: [

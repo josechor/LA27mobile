@@ -48,11 +48,11 @@ class MainScreenState extends State<MainScreen> {
         },
         child: _screens[_selectedIndex],
       ),
-      // bottomNavigationBar: BottomNavBar(
-      //   currentIndex: _selectedIndex,
-      //   onTap: _onItemTapped,
-      //   isVisible: _isVisible,
-      // ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        isVisible: _isVisible,
+      ),
     );
   }
 }

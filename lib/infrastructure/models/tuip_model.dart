@@ -16,6 +16,8 @@ class TuipModel {
   final List<String> tuipMultimedia;
   final String userName;
   final int youLiked;
+  final Tuip? parentData;
+  final Tuip? quotingData;
 
   TuipModel({
     required this.demondId,
@@ -33,6 +35,8 @@ class TuipModel {
     required this.tuipMultimedia,
     required this.userName,
     required this.youLiked,
+    this.parentData,
+    this.quotingData,
   });
 
   factory TuipModel.fromJson(Map<String, dynamic> json) {
@@ -53,6 +57,12 @@ class TuipModel {
         tuipMultimedia: List<String>.from(json['tuipMultimedia']),
         userName: json['userName'],
         youLiked: json['youLiked'],
+        parentData: json['parentData'] != null
+            ? TuipModel.fromJson(json['parentData']).toTuipEntity()
+            : null,
+        quotingData: json['quotingData'] != null
+            ? TuipModel.fromJson(json['quotingData']).toTuipEntity()
+            : null,
       );
     } catch (e) {
       throw Exception('Error parsing tuip model: $e');
@@ -75,5 +85,7 @@ class TuipModel {
         tuipMultimedia: tuipMultimedia,
         userName: userName,
         youLiked: youLiked,
+        parentData: parentData,
+        quotingData: quotingData,
       );
 }
