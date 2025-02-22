@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
               separatorBuilder: (context, index) => Divider(
                 color: colors.secondary, // Color de la línea
                 thickness: 0.1, // Grosor de la línea
-                height: 20, // Espacio total entre elementos
+                height: 10, // Espacio total entre elementos
               ),
             ),
           ),

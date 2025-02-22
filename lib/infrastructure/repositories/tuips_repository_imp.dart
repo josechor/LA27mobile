@@ -18,4 +18,14 @@ class TuipsRepositoryImp implements TuipsRepository {
   Future<List<Tuip>> getTuips({required int page, required int limit}) async {
     return await datasource.getTuips(page: page, limit: limit);
   }
+
+  @override
+  Future<void> setLike({required int tuipId}) async {
+    return await datasource.setLike(tuipId: tuipId);
+  }
+
+  @override
+  Future<void> removeLike({required int tuipId}) async {
+    return await datasource.removeLike(tuipId: tuipId);
+  }
 }
