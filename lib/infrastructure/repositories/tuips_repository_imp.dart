@@ -1,4 +1,5 @@
 import 'package:la27mobile/domain/datasources/tuips_datasource.dart';
+import 'package:la27mobile/domain/entities/post_tuip.dart';
 import 'package:la27mobile/domain/entities/tuip.dart';
 import 'package:la27mobile/domain/repositories/tuips_repository.dart';
 
@@ -17,5 +18,10 @@ class TuipsRepositoryImp implements TuipsRepository {
   @override
   Future<List<Tuip>> getTuips({required int page, required int limit}) async {
     return await datasource.getTuips(page: page, limit: limit);
+  }
+
+  @override
+  Future<void> postTuip({required PostTuip tuip}) async {
+    await datasource.postTuip(tuip: tuip);
   }
 }

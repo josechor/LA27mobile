@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:la27mobile/presentation/widgets/shared/bottom_nav_bar.dart';
+import 'package:la27mobile/presentation/widgets/shared/post_tuip_page.dart';
 import 'home_screen.dart';
 import 'search_screen.dart';
 import 'profile_screen.dart';
@@ -47,6 +48,21 @@ class MainScreenState extends State<MainScreen> {
           return true;
         },
         child: _screens[_selectedIndex],
+      ),
+      floatingActionButton: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        height: _isVisible ? kBottomNavigationBarHeight : 0,
+        width: _isVisible ? kBottomNavigationBarHeight : 0,
+        child: FloatingActionButton(
+          shape: const CircleBorder(),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => PostTuipPage()));
+          },
+          child: const Icon(
+            Icons.add,
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _selectedIndex,
