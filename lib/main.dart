@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'LA27',
       theme: AppTheme().getTheme(),
       home: SafeArea(
-        bottom: false,
+        bottom: true,
         top: false,
         child: const AuthWrapper(),
       ),
