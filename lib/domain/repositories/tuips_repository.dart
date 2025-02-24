@@ -7,4 +7,8 @@ abstract class TuipsRepository {
   Future<List<Tuip>> getTuips({required int page, required int limit});
 
   Future<void> postTuip({required PostTuip tuip});
+
+  Future<void> setLike({required int tuipId});
+
+  Future<void> removeLike({required int tuipId});
 }

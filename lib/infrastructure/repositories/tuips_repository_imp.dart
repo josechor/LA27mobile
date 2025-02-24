@@ -24,4 +24,14 @@ class TuipsRepositoryImp implements TuipsRepository {
   Future<void> postTuip({required PostTuip tuip}) async {
     await datasource.postTuip(tuip: tuip);
   }
+
+  @override
+  Future<void> setLike({required int tuipId}) async {
+    return await datasource.setLike(tuipId: tuipId);
+  }
+
+  @override
+  Future<void> removeLike({required int tuipId}) async {
+    return await datasource.removeLike(tuipId: tuipId);
+  }
 }

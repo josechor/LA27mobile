@@ -98,7 +98,7 @@ class _Tuip extends StatelessWidget {
         ),
         _TuipContent(tuip: tuip, context: context),
         SizedBox(
-          height: 10,
+          height: 0,
         ),
         isQuoted == false
             ? _TuipFooter(tuip: tuip, textTheme: textTheme)
@@ -108,7 +108,7 @@ class _Tuip extends StatelessWidget {
   }
 }
 
-class _TuipFooter extends StatelessWidget {
+class _TuipFooter extends StatefulWidget {
   const _TuipFooter({
     required this.tuip,
     required this.textTheme,
@@ -118,27 +118,38 @@ class _TuipFooter extends StatelessWidget {
   final TextTheme textTheme;
 
   @override
+  State<_TuipFooter> createState() => _TuipFooterState();
+}
+
+class _TuipFooterState extends State<_TuipFooter> {
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _ButtonAndLabel(
             icon: Icon(Icons.chat_bubble_outline,
-                size: textTheme.bodySmall?.fontSize ?? 12),
-            label: tuip.responsesCount.toString()),
-        _ButtonAndLabel(
-            icon: Icon(
-              tuip.youLiked == 1
-                  ? Icons.favorite
-                  : Icons.favorite_border_outlined,
-              color: tuip.youLiked == 1 ? Colors.red : null,
-              size: textTheme.bodySmall?.fontSize ?? 12,
-            ),
-            label: tuip.likesCount.toString()),
+                size: widget.textTheme.bodyLarge?.fontSize ?? 16),
+            label: widget.tuip.responsesCount.toString()),
+        GestureDetector(
+          onTap: () async {
+            await widget.tuip.setLikeOrDislike();
+            setState(() {});
+          },
+          child: _ButtonAndLabel(
+              icon: Icon(
+                widget.tuip.youLiked == 1
+                    ? Icons.favorite
+                    : Icons.favorite_border_outlined,
+                color: widget.tuip.youLiked == 1 ? Colors.red : null,
+                size: widget.textTheme.bodyLarge?.fontSize ?? 16,
+              ),
+              label: widget.tuip.likesCount.toString()),
+        ),
         _ButtonAndLabel(
             icon: Icon(
               Icons.share,
-              size: textTheme.bodySmall?.fontSize ?? 12,
+              size: widget.textTheme.bodyLarge?.fontSize ?? 16,
             ),
             label: '')
       ],
@@ -157,14 +168,17 @@ class _ButtonAndLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        icon,
-        SizedBox(
-          width: 5,
-        ),
-        Text(label ?? ''),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: Row(
+        children: [
+          icon,
+          SizedBox(
+            width: 5,
+          ),
+          Text(label ?? ''),
+        ],
+      ),
     );
   }
 }

@@ -84,4 +84,37 @@ class TuipsDatasourceImp implements TuipsDatasource {
       throw Exception('Failed to post tuip $e');
     }
   }
+
+  @override
+  Future<void> setLike({required int tuipId}) async {
+    try {
+      final token = await storage.getToken();
+      if (token == null) {
+        throw Exception('Token not found');
+      }
+      await http.post(
+        Uri.parse('$domain/api/tuips/like/$tuipId'),
+        headers: {
+          'Demon-Token': token,
+        },
+      );
+    } catch (e) {
+      throw Exception('Failed to like $e');
+    }
+  }
+
+  @override
+  Future<void> removeLike({required int tuipId}) async {
+    try {
+      final token = await storage.getToken();
+      if (token == null) {
+        throw Exception('Token not found');
+      }
+      await http.delete(Uri.parse('$domain/api/tuips/like/$tuipId'), headers: {
+        'Demon-Token': token,
+      });
+    } catch (e) {
+      throw Exception('Failed to like $e');
+    }
+  }
 }

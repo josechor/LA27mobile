@@ -120,9 +120,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 return TuipWidget(tuip: tuips[index]);
               },
               separatorBuilder: (context, index) => Divider(
-                color: colors.secondary,
-                thickness: 0.1,
-                height: 20,
+                color: colors.secondary, // Color de la línea
+                thickness: 0.1, // Grosor de la línea
+                height: 10, // Espacio total entre elementos
               ),
             ),
           ),
