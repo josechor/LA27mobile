@@ -9,19 +9,23 @@ import 'package:http/http.dart' as http;
 class LoginRegisterDatasourceImp implements LoginRegisterDatasource {
   @override
   Future<String?> login({required Login login}) async {
-    final response = await http.post(
-      Uri.parse('$domain/api/users/auth'),
-      body: {
-        'email': login.email,
-        'password': login.password,
-      },
-    );
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final String token = data['token'];
-      return token;
-    } else {
-      throw Exception('Failed to login');
+    try {
+      final response = await http.post(
+        Uri.parse('$domain/api/users/auth'),
+        body: {
+          'email': login.email,
+          'password': login.password,
+        },
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final String token = data['token'];
+        return token;
+      } else {
+        throw Exception('Failed to login');
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

@@ -37,12 +37,12 @@ class PostTuipPageState extends State<PostTuipPage> {
     }
   }
 
-  void _sendTuip() {
+  void _sendTuip() async {
     final PostTuip tuip =
         PostTuip(media: _mediaFiles, content: _tuipController.text);
     final TuipsRepositoryImp tuipsRepository =
         TuipsRepositoryImp(datasource: TuipsDatasourceImp());
-    tuipsRepository.postTuip(tuip: tuip);
+    await tuipsRepository.postTuip(tuip: tuip);
     _tuipController.clear();
     _mediaFiles.clear();
     Navigator.pop(context);
@@ -66,16 +66,14 @@ class PostTuipPageState extends State<PostTuipPage> {
           children: [
             if (widget.replyingTo != null)
               _TuipPreview(tuipText: widget.replyingTo!, isReply: true),
-            Expanded(
-              child: TextField(
-                controller: _tuipController,
-                maxLines: null,
-                maxLength: 254,
-                decoration: InputDecoration(
-                  hintText: "¿Qué estás pensando?",
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.grey.shade400),
-                ),
+            TextField(
+              controller: _tuipController,
+              maxLines: null,
+              maxLength: 254,
+              decoration: InputDecoration(
+                hintText: "¿Qué estás pensando?",
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.grey.shade400),
               ),
             ),
             if (widget.quoting != null)
@@ -108,10 +106,31 @@ class PostTuipPageState extends State<PostTuipPage> {
             ),
             Wrap(
               children: _mediaFiles
-                  .map((file) => Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Image.file(file,
-                            width: 100, height: 100, fit: BoxFit.cover),
+                  .map((file) => Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Image.file(file,
+                                width: 150, height: 150, fit: BoxFit.cover),
+                          ),
+                          Positioned(
+                              right: 5,
+                              top: 5,
+                              child: IconButton.filled(
+                                  style: ButtonStyle(
+                                    fixedSize: WidgetStateProperty.all(
+                                        Size.square(10)),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _mediaFiles.remove(file);
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.close,
+                                    size: 16,
+                                  ))),
+                        ],
                       ))
                   .toList(),
             ),
