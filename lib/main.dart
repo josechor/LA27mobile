@@ -20,7 +20,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'LA27',
       theme: AppTheme().getTheme(),
-      home: const AuthWrapper(),
+      home: SafeArea(
+        bottom: false,
+        top: false,
+        child: const AuthWrapper(),
+      ),
     );
   }
 }
@@ -36,7 +40,7 @@ class AuthWrapper extends StatelessWidget {
     //   return const Scaffold(body: Center(child: CircularProgressIndicator()));
     // }
 
-    if (authProvider.token == null) {
+    if (authProvider.token == null || authProvider.isLoading) {
       return const LoginScreen();
     }
 

@@ -11,8 +11,21 @@ class TuipsDatasourceImp implements TuipsDatasource {
   final storage = AuthStorage();
 
   @override
-  Future<Tuip> getTuip({required int id}) {
-    throw UnimplementedError();
+  Future<Tuip> getTuip({required int id}) async {
+    final token = await storage.getToken();
+    if (token == null) {
+      throw Exception('Token not found');
+    }
+    final response =
+        await http.get(Uri.parse('$domain/api/tuips/$id'), headers: {
+      'Demon-Token': token,
+    });
+
+    if (response.statusCode == 200) {
+      return TuipModel.fromJson(json.decode(response.body)).toTuipEntity();
+    } else {
+      throw Exception('Failed to load self user data');
+    }
   }
 
   @override

@@ -14,6 +14,8 @@ class Tuip {
   final List<String> tuipMultimedia;
   final String userName;
   final int youLiked;
+  final Tuip? parentData;
+  final Tuip? quotingData;
 
   Tuip({
     required this.demondId,
@@ -31,5 +33,7 @@ class Tuip {
     required this.tuipMultimedia,
     required this.userName,
     required this.youLiked,
+    required this.parentData,
+    required this.quotingData,
   });
 }
